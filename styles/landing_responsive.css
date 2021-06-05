@@ -1,0 +1,49 @@
+#navbar .logo {
+    float: none;
+    text-align: center;
+  }
+  
+  #navbar ul,
+  #navbar ul li {
+    float: none;
+  }
+  
+  #navbar ul li a {
+    padding: 5px;
+    border-bottom: rgba(254, 255, 255, 0.267) dotted 1px;
+  }
+  
+  #main-text {
+    background: url("../images/pic1.jpg") no-repeat center center/cover;
+    height: 100vh;
+    text-align: center;
+  }
+  #main-text .content {
+    padding: 4.5rem 0rem;
+  }
+  
+  #main-text .content h1 {
+    font-size: 3rem;
+    line-height: 1.2em;
+  }
+  
+  #main-text .content p {
+    padding-bottom: 4rem;
+    line-height: 1.7em;
+    margin: 1rem o;
+  }
+  
+  .btn {
+    display: inline-block;
+    font-size: 18px;
+    color: #ffff;
+    background: rgb(8, 119, 17);
+    padding: 0.75rem 2rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background: #f7c08a;
+    color: #333;
+  }
