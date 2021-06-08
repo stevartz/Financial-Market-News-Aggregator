@@ -1,48 +1,42 @@
 <?php
 //Checks whether user is in system, verifying it against the password hash
 //It will also create a cookie and a session (not sure which one to use yet), storing the username and password
-include './databaseConnect.php';
-session_start();
+include 'db-link.php';
+include 'db-function.php';
 
-if($_SERVER['REQUEST_METHOD']=='POST'){
+//session_start();
 
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-    $username = $_POST['Log-username'];
-    $password = $_POST['Log-password'];
+    $username =  !empty($_POST['Log-username']) ? $_POST['Log-username'] : null;
+    $password =  !empty($_POST['Log-password']) ? $_POST['Log-password'] : null;
 
-    $username = mysqli_real_escape_string($conn,$username);
-    $password = mysqli_real_escape_string($conn,$password);
+    $statement = login_prepare($conn, $username);
+   // $statement = user_execute($statement); 
+    $statement->execute();
 
+    $count = $statement->rowCount();
+    $row   =   $statement->fetchAll(PDO::FETCH_ASSOC);
+    var_dump($row) . "</br>";
 
-    $authenticate_query = "SELECT * FROM users WHERE username='{$username}' ";
-    $select_user_query = mysqli_query($conn, $authenticate_query);
+    if($count > 0  && !empty($row)) {
+  
+         if(password_verify($password, $row[0]['password'])){
+    
+        //   $_SESSION['username'] = $result['username'];
+        //   $_SESSION['password'] = $result['password'];
+    
+           echo "Login Successful"; 
+           header('Location: ./home.php');
 
-    if(!$select_user_query){
+            }
+    
+      }else {
 
-        die("Query Failed". mysqli_error($conn));
-    }
+          die("Incorrect username or password");
 
-    while($row = mysqli_fetch_array($select_user_query)){
-        $db_user_id = $row['id'];
-        $db_username = $row['username'];
-        $db_user_password = $row['password'];
-    }
-
-
-if($username !== $db_username && $password !== $db_user_password){
-    echo "Invalid Username or Password";
-}else if($username == $db_username && $password == $db_user_password ){
-
-    $_SESSION['username'] = $db_username;
-    $_SESSION['password'] = $db_user_password;
-
-    echo "Login Successful"; 
-
-    header('Location: ./home.php');
+      }
 
 }
-
-}
-
 
 ?>
